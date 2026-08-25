@@ -1,0 +1,20 @@
+{
+  "name": "@moneyleh/shared",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./components/ui/button": "./src/components/ui/button.tsx",
+    "./lib/utils": "./src/lib/utils.ts"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.7.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.6.0"
+  }
+}
