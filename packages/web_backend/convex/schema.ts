@@ -1,4 +1,3 @@
-// packages/web_backend/auth/schema.ts
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
