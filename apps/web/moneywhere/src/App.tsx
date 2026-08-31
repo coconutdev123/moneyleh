@@ -1,21 +1,40 @@
-import { Button } from "@shared/components/ui/button"
+import { type ReactElement, useEffect } from "react";
+import SignUp from "./pages/auth/SignUp";
+import SignIn from "./pages/auth/SignIn";
+import Confirmation from "./pages/auth/confirmation";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import { useConvexAuth } from "convex/react";
+import ForgotPassword from "./pages/auth/ForgotPw";
+import Dashboard from "./pages/dashboard/dashboard";
 
-export function App() {
-  return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+function PrivateRoute({element} : {element: ReactElement}){
+  const { isLoading, isAuthenticated } = useConvexAuth(); 
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
       </div>
-    </div>
-  )
+    );
+  }
+
+  return isAuthenticated ? element : <Navigate to="/sign-in" replace />;
 }
 
-export default App
+export default function App(){
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/confirmation" element={<Confirmation />} />
+
+        <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+        <Route path="*" element={<Navigate to="/sign-in" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+

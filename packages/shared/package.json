@@ -6,6 +6,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./components/ui/button": "./src/components/ui/button.tsx",
+    "./components/ui/card": "./src/components/ui/card.tsx",
     "./lib/utils": "./src/lib/utils.ts"
   },
   "peerDependencies": {
