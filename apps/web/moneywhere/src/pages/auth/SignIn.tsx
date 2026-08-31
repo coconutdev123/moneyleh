@@ -13,10 +13,10 @@ export default function SignIn (){
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    // const {isAuthenticated, isLoading} = useConvexAuth();
+    const [searchParams] = useSearchParams();
     const { signIn } = useAuthActions();
 
-    // const oauthError = searchParams.get("error");
+    const oauthError = searchParams.get("error");
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -36,8 +36,6 @@ export default function SignIn (){
             setLoading(false);
         }  
     };
-
-    
 
     return (
         <div className="flex-1 flex flex-col justify-center items-center p-8">
@@ -91,7 +89,7 @@ export default function SignIn (){
               </Button>
             </form>
 
-            {/* {oauthError && (<div className="text-destructive text-sm text-center">{oauthError}</div>)} */}
+            {oauthError && (<div className="text-destructive text-sm text-center">{oauthError}</div>)}
 
             <div className="flex items-center gap-3 my-4">
               <div className="flex-1 h-px bg-border" />
