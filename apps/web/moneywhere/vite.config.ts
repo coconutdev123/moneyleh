@@ -10,6 +10,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@shared": path.resolve(__dirname, "../../../packages/shared/src"),
+      "@web_backend": path.resolve(__dirname, "../../../packages/web_backend"),
     },
   },
 })
