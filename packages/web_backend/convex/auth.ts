@@ -24,6 +24,7 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
         email: "",
         gender: "",
         dob: "",
+        pfp: "",
       });
     },
   },

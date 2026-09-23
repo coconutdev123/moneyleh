@@ -49,6 +49,7 @@ export const initProfile = internalMutation({
             email: "",
             gender: "",
             dob: "",
+            pfp: "",
         };
         const id = await ctx.db.insert("profile", initial);
         return {...initial, _id: id};
@@ -62,6 +63,7 @@ export const create = internalMutation({
     email: v.string(),
     gender: v.string(),
     dob: v.string(),
+    pfp: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("profile", args);
@@ -88,6 +90,7 @@ export const ensureProfile = mutation({
     email: v.string(),
     gender: v.string(),
     dob: v.string(),
+    pfp: v.optional(v.string()),
   }),
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
@@ -108,6 +111,7 @@ export const ensureProfile = mutation({
       email: user?.email ?? "",
       gender: "",
       dob: "",
+      pfp: "",
     });
     return (await ctx.db.get(id))!;
   },

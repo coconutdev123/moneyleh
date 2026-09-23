@@ -2,10 +2,15 @@
 import { Button } from "@shared/components/ui/button";
 import { Leaf } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { api } from "@web_backend/convex/_generated/api";
+import {useQuery} from "convex/react";
 
 export default function Header() {
 
     const navigate = useNavigate();
+    const profile = useQuery(api.profile.getProfile);
+    const profilePicture = profile?.pfp?.trim();
+    const usernameInitial = profile?.username?.trim().charAt(0).toUpperCase() || "U";
 
     return (
     <header className="flex items-center justify-between rounded-[24px] border border-[#dce6dc] bg-white/85 px-4 py-3 shadow-[0_10px_24px_rgba(39,53,47,0.04)] backdrop-blur-sm sm:px-5">
@@ -33,6 +38,13 @@ export default function Header() {
         </Button>
         <Button
             size="sm"
+            className="rounded-xl bg-[#A3B899] px-4 py-2 text-sm font-bold text-white shadow-[3px_3px_0_#27352f] hover:bg-[#8FA786]"
+            onClick={() => navigate("/wish-list")}
+        >
+            Wishlist
+        </Button>
+                <Button
+            size="sm"
             className="rounded-xl bg-[#e88976] px-4 py-2 text-sm font-bold text-white shadow-[3px_3px_0_#27352f] hover:bg-[#d97865]"
             onClick={() => navigate("/add-expense")}
         >
@@ -42,14 +54,18 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-3">
-        <Button
-            aria-label="User profile"
-            size="icon"
-            className="h-10 w-10 rounded-full bg-[#f8d66d] text-sm font-black text-[#27352f] shadow-[2px_2px_0_#9ed9c2] hover:bg-[#f4ce59]"
-            onClick={() => navigate("/profile")}
-        >
-            JD
-        </Button>
+            <Button
+                aria-label="User profile"
+                size="icon"
+                className="h-10 w-10 rounded-full bg-[#f8d66d] text-sm font-black text-[#27352f] shadow-[2px_2px_0_#9ed9c2] hover:bg-[#f4ce59]"
+                onClick={() => navigate("/profile")}
+            >
+                {profilePicture ? (
+                    <img src={profilePicture} alt="" className="h-full w-full rounded-full object-cover" />
+                ) : (
+                    usernameInitial
+                )}
+            </Button>
         </div>
     </header>
     );

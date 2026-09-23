@@ -15,6 +15,7 @@ export default defineSchema({
     email: v.string(),
     gender: v.string(),
     dob: v.string(), 
+    pfp: v.optional(v.string()),
   }).index("by_user", ["userId"]),
 
 });

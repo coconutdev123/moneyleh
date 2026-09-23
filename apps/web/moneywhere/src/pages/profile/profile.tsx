@@ -46,7 +46,7 @@ export default function Profile() {
 
 				<section className="pb-8 pt-9">
                     <p className="mb-2 text-xs font-black uppercase tracking-[0.16em] text-[#e88976]">
-                        Your corner of moneyleh
+                        Your moneyleh ~~~
                     </p>
                     <h1 className="text-3xl font-black tracking-[-0.07em] sm:text-4xl">Profile & preferences</h1>
                     <p className="mt-2 max-w-xl text-sm leading-6 text-[#75837b]">Keep your details current and shape the way your money check-ins feel.</p>
@@ -57,9 +57,9 @@ export default function Profile() {
 						<section className="rounded-[28px] border border-[#dce6dc] bg-white/90 p-6 shadow-[0_12px_30px_rgba(39,53,47,0.04)]">
 							<div className="flex items-start justify-between">
 								<div className="flex items-center gap-4">
-                                        <div className="flex h-16 w-16 items-center justify-center rounded-[22px] bg-[#f8d66d] text-xl font-black text-[#27352f] shadow-[4px_4px_0_#9ed9c2]">
-                                            {getInitials(displayName)}
-                                        </div>
+										<div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-[22px] bg-[#f8d66d] text-xl font-black text-[#27352f] shadow-[4px_4px_0_#9ed9c2]">
+											{profile?.pfp ? <img src={profile.pfp} alt={`${displayName} profile`} className="h-full w-full object-cover" /> : getInitials(displayName)}
+										</div>
 								<div>
                                     <h2 className="text-xl font-black tracking-[-0.05em]">{displayName}</h2>
                                             <p className="mt-1 text-sm text-[#75837b]">Thoughtful spender since May 2026</p>
@@ -89,8 +89,48 @@ export default function Profile() {
 					</div>
 
 					<div className="space-y-6">
-						<section className="rounded-[28px] border border-[#dce6dc] bg-white/90 p-6 shadow-[0_12px_30px_rgba(39,53,47,0.04)]"><div className="mb-6 flex items-center justify-between"><div><h2 className="text-lg font-black tracking-[-0.04em]">Preferences</h2><p className="mt-1 text-sm text-[#829087]">Choose what makes your dashboard useful.</p></div><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#fff8dd] text-[#806b32]"><Bell size={19} /></span></div><div className="divide-y divide-[#edf0ea]">{notifications.map((item) => <div key={item.label} className="flex items-center gap-4 py-4 first:pt-0 last:pb-0"><div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#f8f6f0] text-[#e88976]"><Bell size={16} /></div><div className="flex-1"><p className="text-sm font-bold">{item.label}</p><p className="mt-1 text-xs text-[#829087]">{item.detail}</p></div><button type="button" role="switch" aria-checked={item.enabled} aria-label={`Toggle ${item.label}`} onClick={() => toggleNotification(item.label)} className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${item.enabled ? "bg-[#9ed9c2]" : "bg-[#dce6dc]"}`}><span className={`absolute top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${item.enabled ? "translate-x-6" : "translate-x-1"}`} /></button></div>)}</div></section>
-						<section className="rounded-[28px] border border-[#dce6dc] bg-white/90 p-6 shadow-[0_12px_30px_rgba(39,53,47,0.04)]"><h2 className="text-lg font-black tracking-[-0.04em]">Account settings</h2><div className="mt-5 space-y-2"><button type="button" className="flex w-full items-center gap-3 rounded-2xl border border-[#edf0ea] bg-[#fdfcf8] px-4 py-3 text-left transition-colors hover:bg-[#f8f6f0]"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#a9c7f5] text-[#27352f]"><LockKeyhole size={16} /></span><span className="flex-1"><span className="block text-sm font-bold">Password & sign-in</span><span className="mt-1 block text-xs text-[#829087]">Update your password or connected accounts</span></span><ChevronRight size={17} className="text-[#9aaa9f]" /></button><button type="button" className="flex w-full items-center gap-3 rounded-2xl border border-[#edf0ea] bg-[#fdfcf8] px-4 py-3 text-left transition-colors hover:bg-[#f8f6f0]"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#f8d66d] text-[#27352f]"><CreditCard size={16} /></span><span className="flex-1"><span className="block text-sm font-bold">Connected accounts</span><span className="mt-1 block text-xs text-[#829087]">Manage linked financial accounts</span></span><ChevronRight size={17} className="text-[#9aaa9f]" /></button></div></section>
+						<section className="rounded-[28px] border border-[#dce6dc] bg-white/90 p-6 shadow-[0_12px_30px_rgba(39,53,47,0.04)]">
+                            <div className="mb-6 flex items-center justify-between">
+                                <div>
+                                    <h2 className="text-lg font-black tracking-[-0.04em]">Preferences</h2>
+                                    <p className="mt-1 text-sm text-[#829087]">Choose what makes your dashboard useful.</p>
+                                </div>
+                                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#fff8dd] text-[#806b32]"><Bell size={19} /></span>
+                            </div>
+                            <div className="divide-y divide-[#edf0ea]">{notifications.map((item) => 
+                                <div key={item.label} className="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#f8f6f0] text-[#e88976]">
+                                        <Bell size={16} />
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm font-bold">{item.label}</p>
+                                        <p className="mt-1 text-xs text-[#829087]">{item.detail}</p>
+                                    </div>
+                                    <button type="button" role="switch" aria-checked={item.enabled} aria-label={`Toggle ${item.label}`} onClick={() => toggleNotification(item.label)} className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${item.enabled ? "bg-[#9ed9c2]" : "bg-[#dce6dc]"}`}>
+                                        <span className={`absolute left-1 top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${item.enabled ? "translate-x-5" : "translate-x-0"}`} />
+                                    </button>
+                                </div>)}
+                            </div>
+                        </section>
+						<section className="rounded-[28px] border border-[#dce6dc] bg-white/90 p-6 shadow-[0_12px_30px_rgba(39,53,47,0.04)]">
+                            <h2 className="text-lg font-black tracking-[-0.04em]">Account settings</h2>
+                                <div className="mt-5 space-y-2">
+                                    <button type="button" className="flex w-full items-center gap-3 rounded-2xl border border-[#edf0ea] bg-[#fdfcf8] px-4 py-3 text-left transition-colors hover:bg-[#f8f6f0]">
+                                        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#a9c7f5] text-[#27352f]"><LockKeyhole size={16} /></span>
+                                        <span className="flex-1"><span className="block text-sm font-bold">Password & sign-in</span>
+                                        <span className="mt-1 block text-xs text-[#829087]">Update your password or connected accounts</span>
+                                        </span><ChevronRight size={17} className="text-[#9aaa9f]" />
+                                    </button>
+                                    <button type="button" className="flex w-full items-center gap-3 rounded-2xl border border-[#edf0ea] bg-[#fdfcf8] px-4 py-3 text-left transition-colors hover:bg-[#f8f6f0]">
+                                        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#f8d66d] text-[#27352f]"><CreditCard size={16} /></span>
+                                        <span className="flex-1">
+                                            <span className="block text-sm font-bold">Connected accounts</span>
+                                            <span className="mt-1 block text-xs text-[#829087]">Manage linked financial accounts</span>
+                                        </span>
+                                        <ChevronRight size={17} className="text-[#9aaa9f]" />
+                                    </button>
+                                </div>
+                        </section>
 					</div>
 				</div>
 			</div>

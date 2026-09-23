@@ -48,6 +48,7 @@ function getEmptyProfile() {
     gender: "",
     state: "",
     dob: "",
+    pfp: "",
   };
 }
 
