@@ -1,7 +1,7 @@
 import { ArrowDownLeft, ArrowUpRight, CalendarDays, ChevronDown, CircleHelp, Coffee, Home, MoreHorizontal, Plus, ShoppingBag, Sparkles, Target, TrendingUp, Utensils, Wallet } from "lucide-react";
 import Header from "../../components/Header";
 import { api } from "@web_backend/convex/_generated/api";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
 
 const summaryCards = [
   { label: "Available to spend", value: "$2,846.20", note: "68% of your monthly plan", tone: "bg-[#edf7ed]", icon: Wallet },

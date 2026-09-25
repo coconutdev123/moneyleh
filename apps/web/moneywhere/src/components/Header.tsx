@@ -57,13 +57,13 @@ export default function Header() {
             <Button
                 aria-label="User profile"
                 size="icon"
-                className="h-10 w-10 rounded-full bg-[#f8d66d] text-sm font-black text-[#27352f] shadow-[2px_2px_0_#9ed9c2] hover:bg-[#f4ce59]"
+                className="h-10 w-10 overflow-hidden rounded-full bg-[#f8d66d] p-0 text-sm font-black text-[#27352f] hover:bg-[#f4ce59]"
                 onClick={() => navigate("/profile")}
             >
                 {profilePicture ? (
-                    <img src={profilePicture} alt="" className="h-full w-full rounded-full object-cover" />
+                    <img src={profilePicture} alt="" className="block h-full w-full object-cover object-center" />
                 ) : (
-                    usernameInitial
+                    <span className="flex h-full w-full items-center justify-center">{usernameInitial}</span>
                 )}
             </Button>
         </div>

@@ -10,8 +10,10 @@
 
 import type * as auth from "../auth.js";
 import type * as authHelper from "../authHelper.js";
+import type * as expense from "../expense.js";
 import type * as http from "../http.js";
 import type * as profile from "../profile.js";
+import type * as wishlist from "../wishlist.js";
 
 import type {
   ApiFromModules,
@@ -22,8 +24,10 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   authHelper: typeof authHelper;
+  expense: typeof expense;
   http: typeof http;
   profile: typeof profile;
+  wishlist: typeof wishlist;
 }>;
 
 /**

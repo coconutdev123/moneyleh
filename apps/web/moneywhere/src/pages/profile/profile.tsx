@@ -57,7 +57,7 @@ export default function Profile() {
 						<section className="rounded-[28px] border border-[#dce6dc] bg-white/90 p-6 shadow-[0_12px_30px_rgba(39,53,47,0.04)]">
 							<div className="flex items-start justify-between">
 								<div className="flex items-center gap-4">
-										<div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-[22px] bg-[#f8d66d] text-xl font-black text-[#27352f] shadow-[4px_4px_0_#9ed9c2]">
+										<div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-[22px] bg-[#f8d66d] text-xl font-black text-[#27352f]">
 											{profile?.pfp ? <img src={profile.pfp} alt={`${displayName} profile`} className="h-full w-full object-cover" /> : getInitials(displayName)}
 										</div>
 								<div>

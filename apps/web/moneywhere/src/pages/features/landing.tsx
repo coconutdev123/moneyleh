@@ -97,7 +97,6 @@ export default function Landing() {
 
 			<section id="stories" className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-24"><div className="grid gap-10 rounded-[30px] bg-[#27352f] px-7 py-10 text-white sm:px-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center"><div><p className="mb-3 text-xs font-black uppercase tracking-[0.15em] text-[#f8d66d]">A little more ease</p><h2 className="max-w-md text-3xl font-black leading-tight tracking-[-0.06em] sm:text-4xl">Your future self will thank you.</h2><p className="mt-4 max-w-sm text-sm leading-6 text-[#b7c6bc]">Join thousands of people building a better relationship with their money, one clear choice at a time.</p></div><div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-end"><Link to="/sign-up" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#f8d66d] px-6 py-3.5 text-sm font-black text-[#27352f] transition-transform hover:-translate-y-0.5">Get started free <ArrowRight size={17} /></Link><span className="flex items-center justify-center gap-2 text-xs font-semibold text-[#b7c6bc]"><Check size={15} className="text-[#9ed9c2]" /> No credit card needed</span></div></div></section>
 
-			<footer className="mx-auto flex max-w-6xl flex-col gap-4 border-t border-[#e3e8df] px-6 py-8 text-xs font-semibold text-[#829087] sm:flex-row sm:items-center sm:justify-between lg:px-8"><Logo /><span>Made for calmer money days.</span></footer>
 		</main>
 	);
 }
