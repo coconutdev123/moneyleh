@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, CalendarDays, Check, ImagePlus, Mail, Save, Trash2, Upload, UserRound } from "lucide-react";
+import { ArrowLeft, CalendarDays, Check, DollarSign, ImagePlus, Mail, Save, Trash2, Upload, UserRound } from "lucide-react";
 import { useMutation, useQuery } from "convex/react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { api } from "@web_backend/convex/_generated/api";
+import { useUsernameAvailability } from "../../lib/useUsernameAvailability";
 
 export default function AccountInfo() {
 
@@ -13,6 +14,7 @@ type ProfileForm = {
     gender: string;
     dob: string;
     pfp: string;
+    monthlyIncome: string;
 };
 
 const emptyForm: ProfileForm = {
@@ -21,12 +23,14 @@ const emptyForm: ProfileForm = {
     gender: "",
     dob: "",
     pfp: "",
+    monthlyIncome: "",
 };
     const navigate = useNavigate();
     const profile = useQuery(api.profile.getProfile);
     const ensureProfile = useMutation(api.profile.ensureProfile);
     const updateProfile = useMutation(api.profile.update);
     const [form, setForm] = useState<ProfileForm>(emptyForm);
+    const usernameAvailability = useUsernameAvailability(form.username, Boolean(profile));
     const [isSaving, setIsSaving] = useState(false);
     const [imageSrc, setImageSrc] = useState("");
     const [zoom, setZoom] = useState(1);
@@ -48,6 +52,7 @@ const emptyForm: ProfileForm = {
                 gender: profile.gender,
                 dob: profile.dob,
                 pfp: profile.pfp || "",
+                monthlyIncome: profile.monthlyIncome?.toString() ?? "",
             });
             setImageSrc(profile.pfp || "");
         }
@@ -134,10 +139,31 @@ const emptyForm: ProfileForm = {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!profile) return;
+        const monthlyIncome = form.monthlyIncome.trim() === "" ? undefined : Number(form.monthlyIncome);
+        if (monthlyIncome !== undefined && (!Number.isFinite(monthlyIncome) || monthlyIncome < 0)) {
+            toast.error("Monthly income must be zero or greater.");
+            return;
+        }
+        if (usernameAvailability.status !== "available") {
+            toast.error(usernameAvailability.status === "taken" || usernameAvailability.status === "invalid"
+                ? usernameAvailability.message
+                : "Please wait for username availability to finish checking.");
+            return;
+        }
 
         setIsSaving(true);
         try {
-            await updateProfile({ id: profile._id, updates: { ...form, pfp: await getCroppedPhoto() } });
+            await updateProfile({
+                id: profile._id,
+                updates: {
+                    username: form.username,
+                    email: form.email,
+                    gender: form.gender,
+                    dob: form.dob,
+                    pfp: await getCroppedPhoto(),
+                    ...(monthlyIncome === undefined ? {} : { monthlyIncome }),
+                },
+            });
             toast.success("Your account details are up to date.");
             navigate("/profile");
         } catch {
@@ -172,8 +198,9 @@ const emptyForm: ProfileForm = {
                             <label htmlFor="username" className="mb-2 block text-sm font-bold">Username</label>
                             <div className="relative">
                                 <UserRound className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#4e7460]" size={17} />
-                                <input id="username" value={form.username} onChange={(event) => updateField("username", event.target.value)} disabled={isLoading || isSaving} required placeholder="Jamie Davis" className="h-12 w-full rounded-2xl border border-[#dce6dc] bg-[#fdfcf8] pl-11 pr-4 text-sm font-semibold outline-none transition focus:border-[#9ed9c2] focus:ring-4 focus:ring-[#9ed9c2]/25 disabled:opacity-60" />
+                                <input id="username" value={form.username} onChange={(event) => updateField("username", event.target.value)} disabled={isLoading || isSaving} required minLength={3} maxLength={16} aria-describedby="account-username-status" placeholder="Jamie Davis" className="h-12 w-full rounded-2xl border border-[#dce6dc] bg-[#fdfcf8] pl-11 pr-4 text-sm font-semibold outline-none transition focus:border-[#9ed9c2] focus:ring-4 focus:ring-[#9ed9c2]/25 disabled:opacity-60" />
                             </div>
+                            <p id="account-username-status" aria-live="polite" className={`mt-1 min-h-4 text-xs font-semibold ${usernameAvailability.status === "available" ? "text-[#4e7460]" : usernameAvailability.status === "taken" || usernameAvailability.status === "invalid" ? "text-[#bf624f]" : "text-[#829087]"}`}>{usernameAvailability.status === "available" ? "Username is available" : usernameAvailability.status === "taken" || usernameAvailability.status === "invalid" ? usernameAvailability.message : usernameAvailability.status === "checking" ? "Checking username..." : ""}</p>
                         </div>
 
                         <div>
@@ -201,6 +228,14 @@ const emptyForm: ProfileForm = {
                                 <div className="relative">
                                     <CalendarDays className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#806b32]" size={17} />
                                     <input id="dob" type="date" value={form.dob} onChange={(event) => updateField("dob", event.target.value)} disabled={isLoading || isSaving} className="h-12 w-full rounded-2xl border border-[#dce6dc] bg-[#fdfcf8] pl-11 pr-4 text-sm font-semibold outline-none transition focus:border-[#9ed9c2] focus:ring-4 focus:ring-[#9ed9c2]/25 disabled:opacity-60" />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label htmlFor="monthlyIncome" className="mb-2 block text-sm font-bold">Monthly income</label>
+                                <div className="relative">
+                                    <DollarSign className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#4e7460]" size={17} />
+                                    <input id="monthlyIncome" type="number" min="0" step="0.01" inputMode="decimal" value={form.monthlyIncome} onChange={(event) => updateField("monthlyIncome", event.target.value)} disabled={isLoading || isSaving} placeholder="0.00" className="h-12 w-full appearance-none rounded-2xl border border-[#dce6dc] bg-[#fdfcf8] pl-11 pr-4 text-sm font-semibold outline-none transition focus:border-[#9ed9c2] focus:ring-4 focus:ring-[#9ed9c2]/25 disabled:opacity-60 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
                                 </div>
                             </div>
 

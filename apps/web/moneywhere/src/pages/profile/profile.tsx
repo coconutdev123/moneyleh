@@ -1,7 +1,9 @@
-import { Bell, ChevronRight, CreditCard, LockKeyhole, Mail, Pencil, ShieldCheck, UserRound } from "lucide-react";
+import { Bell, ChevronRight, CreditCard, LockKeyhole, Mail, Pencil, ShieldCheck, Trash2, UserRound } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "convex/react";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { toast } from "sonner";
 import { api } from "@web_backend/convex/_generated/api";
 import Header from "../../components/Header";
 
@@ -15,9 +17,28 @@ export default function Profile() {
 	const [notifications, setNotifications] = useState(preferences);
     const profile = useQuery(api.profile.getProfile);
     const ensureProfile = useMutation(api.profile.ensureProfile);
+    const deleteAccount = useMutation(api.profile.deleteAccount);
+    const { signOut } = useAuthActions();
+    const navigate = useNavigate();
+    const [isDeletingAccount, setIsDeletingAccount] = useState(false);
     const toggleNotification = (label: string) => {
 		setNotifications((current) => current.map((item) => item.label === label ? { ...item, enabled: !item.enabled } : item));
 	};
+
+    const handleDeleteAccount = async () => {
+        const confirmed = window.confirm("Delete your account permanently? This will erase your profile, expenses, wishlist, savings, and sign-in credentials. This action cannot be undone.");
+        if (!confirmed) return;
+
+        setIsDeletingAccount(true);
+        try {
+            await deleteAccount();
+            await signOut();
+            navigate("/", { replace: true });
+        } catch {
+            toast.error("We couldn't delete your account. Please try again.");
+            setIsDeletingAccount(false);
+        }
+    };
 
     useEffect(() => {
         if (profile === null){
@@ -130,6 +151,14 @@ export default function Profile() {
                                         <ChevronRight size={17} className="text-[#9aaa9f]" />
                                     </button>
                                 </div>
+                        </section>
+						<section className="rounded-[28px] border border-[#efc9c0] bg-white/90 p-6 shadow-[0_12px_30px_rgba(39,53,47,0.04)]">
+                            <h2 className="text-lg font-black tracking-[-0.04em] text-[#a94f40]">Delete account</h2>
+                            <p className="mt-2 text-sm leading-6 text-[#75837b]">Permanently erase your profile, expenses, wishlist, savings, and sign-in credentials.</p>
+                            <button type="button" onClick={handleDeleteAccount} disabled={isDeletingAccount} className="mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[#bf624f] px-4 py-2 text-sm font-bold text-[#a94f40] transition-colors hover:bg-[#fff0ec] disabled:cursor-not-allowed disabled:opacity-60">
+                                <Trash2 size={16} />
+                                {isDeletingAccount ? "Deleting account..." : "Delete my account"}
+                            </button>
                         </section>
 					</div>
 				</div>

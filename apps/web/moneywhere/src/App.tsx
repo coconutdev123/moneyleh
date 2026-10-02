@@ -11,6 +11,7 @@ import Wishlist from "./pages/features/wishlist";
 import AccountInfo from "./pages/profile/account-info";
 import Privacy from "./pages/legal/Privacy";
 import Terms from "./pages/legal/Terms";
+import Survey from "./pages/legal/survey";
 import Footer from "./components/Footer";
 import { Toaster } from "@shared/components/ui/sonner";
 
@@ -41,6 +42,7 @@ export default function App(){
         <Route path="/account-info" element={<AccountInfo />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/survey" element={<Survey />} />
 
         {/* <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
         <Route path="*" element={<Navigate to="/sign-in" replace />} /> */}

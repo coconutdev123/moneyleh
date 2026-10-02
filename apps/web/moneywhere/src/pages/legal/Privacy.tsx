@@ -4,11 +4,11 @@ import { ArrowLeft } from "lucide-react";
 const sections = [
 	{
 		title: "Information we collect",
-		body: "When you create an account, we collect the information needed to provide the service, such as your email address, username, and authentication details. When you use moneyleh, you may provide profile information, expenses, budgets, wishlist items, savings amounts, and related notes. We may also receive basic device, browser, and security information needed to keep the service reliable.",
+		body: "When you create an account, we collect the information needed to provide the service, such as your email address, username, and authentication details. When you use moneyleh, you may provide profile information, expenses, budgets, wishlist items, savings amounts, and related notes. New users may also choose to provide their date of birth and monthly income in the onboarding survey. We may receive basic device, browser, and security information needed to keep the service reliable.",
 	},
 	{
 		title: "How we use information",
-		body: "We use your information to authenticate you, save and display your financial entries, provide dashboards and wishlist features, respond to requests, prevent misuse, maintain security, and improve the service. We do not use your personal financial entries to provide financial advice or make decisions about your eligibility for products or services.",
+		body: "We use your information to authenticate you, save and display your financial entries, provide dashboards and wishlist features, respond to requests, prevent misuse, maintain security, and improve the service. Your date of birth and monthly income are used only to personalize your experience within moneyleh; we do not use those details for advertising, sale, profiling for third parties, or other purposes. We do not use your personal financial entries to provide financial advice or make decisions about your eligibility for products or services.",
 	},
 	{
 		title: "Storage and security",
@@ -16,7 +16,7 @@ const sections = [
 	},
 	{
 		title: "Retention and deletion",
-		body: "We retain account and application data while your account is active and for only as long as reasonably necessary for the purposes described here, including security, dispute resolution, and legal obligations. You may request correction or deletion of your personal information by contacting the moneyleh team through the support channel provided in the app. We will verify the request and delete or de-identify information unless we must retain it for a lawful reason.",
+		body: "We retain account and application data while your account is active and for only as long as reasonably necessary for the purposes described here, including security, dispute resolution, and legal obligations. You can permanently delete your account from Profile & preferences using the Delete my account control. This deletes your profile, expenses, wishlist and savings data, and sign-in credentials from the active service. Some information may be retained when required by law or necessary to establish, exercise, or defend legal claims. You may also contact the moneyleh team through the support channel provided in the app to request access, correction, or deletion. We will verify requests and handle them within the time required by applicable law.",
 	},
 	{
 		title: "Sharing",

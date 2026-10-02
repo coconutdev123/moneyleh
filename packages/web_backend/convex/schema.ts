@@ -12,11 +12,25 @@ export default defineSchema({
   profile: defineTable({
     userId: v.id("users"), 
     username: v.string(),
+    normalizedUsername: v.optional(v.string()),
     email: v.string(),
     gender: v.string(),
     dob: v.string(), 
     pfp: v.optional(v.string()),
-  }).index("by_user", ["userId"]),
+    monthlyIncome: v.optional(v.number()),
+    monthlyIncomeUpdatedAt: v.optional(v.number()),
+    onboardingCompleted: v.optional(v.boolean()),
+  }).index("by_user", ["userId"]).index("by_normalizedUsername", ["normalizedUsername"]),
+
+  usernameFilter: defineTable({
+  key: v.literal("global"),
+  algorithmVersion: v.number(),
+  usernameCount: v.number(),
+  targetFalsePositiveRate: v.number(),
+  bitCount: v.number(),
+  hashCount: v.number(),
+  bits: v.bytes(),
+}).index("by_key", ["key"]),
 
   expense: defineTable({
     userId: v.id("users"),

@@ -8,7 +8,7 @@ import { Label } from "@shared/components/ui/label";
 import { api } from "@web_backend/convex/_generated/api";
 import Header from "../../components/Header";
 
-const quickCategories = ["Groceries", "Dining", "Transport", "Bills", "Shopping", "Health", "Others"];
+const quickCategories = ["Groceries", "Dining", "Transport", "Bills", "Shopping", "Health", "Others", "Rent"];
 
 export default function Expense() {
   const navigate = useNavigate();
