@@ -1,4 +1,6 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import type { ReactElement } from "react";
+import {useConvexAuth} from "convex/react";
 import Dashboard from "./pages/features/dashboard";
 import Profile from "./pages/profile/profile";
 import SignIn from "./pages/auth/SignIn";
@@ -15,6 +17,20 @@ import Terms from "./pages/legal/Terms";
 import Footer from "./components/Footer";
 import { Toaster } from "@shared/components/ui/sonner";
 
+function PrivateRoute({ element }: { element: ReactElement }) {
+  const { isLoading, isAuthenticated } = useConvexAuth();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      </div>
+    );
+  }
+
+  return isAuthenticated ? element : <Navigate to="/sign-in" replace />;
+}
+
 export default function App(){
 
   return (
@@ -26,26 +42,19 @@ export default function App(){
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/confirmation" element={<Confirmation />} />
-        {/*
+        
         <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
         <Route path="/add-expense" element={<PrivateRoute element={<Expense />} />} />
         <Route path="/overview" element={<PrivateRoute element={<Overview />} />} />
-        <Route path="/wishlist" element={<PrivateRoute element={<Wishlist />} />} />
+        <Route path="/wish-list" element={<PrivateRoute element={<Wishlist />} />} />
         <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
         <Route path="/account-info" element={<PrivateRoute element={<AccountInfo />} />} />
         <Route path="*" element={<Navigate to="/sign-in" replace />} />
-        */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/overview" element={<Overview />} />
-        <Route path="/add-expense" element={<Expense />} />
-        <Route path="/wish-list" element={<Wishlist />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/account-info" element={<AccountInfo />} />
+       
+
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
 
-        {/* <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
-        <Route path="*" element={<Navigate to="/sign-in" replace />} /> */}
       </Routes>
       <Footer />
       <Toaster />
