@@ -126,40 +126,6 @@ export const update = mutation({
   },
 });
 
-export const completeOnboarding = mutation({
-  args: {
-    dob: v.string(),
-    monthlyIncome: v.number(),
-  },
-  handler: async (ctx, { dob, monthlyIncome }) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) throw new Error("Not authenticated");
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(dob) || Number.isNaN(Date.parse(`${dob}T00:00:00`))) {
-      throw new Error("A valid date of birth is required");
-    }
-    if (new Date(`${dob}T00:00:00`).getTime() > Date.now()) {
-      throw new Error("Date of birth cannot be in the future");
-    }
-    if (!Number.isFinite(monthlyIncome) || monthlyIncome < 0) {
-      throw new Error("Monthly income must be zero or greater");
-    }
-
-    const profile = await ctx.db
-      .query("profile")
-      .withIndex("by_user", (q) => q.eq("userId", userId))
-      .first();
-    if (!profile) throw new Error("Profile not found");
-    if (profile.onboardingCompleted !== false) throw new Error("Survey is not available for this account");
-
-    await ctx.db.patch(profile._id, {
-      dob,
-      monthlyIncome,
-      monthlyIncomeUpdatedAt: Date.now(),
-      onboardingCompleted: true,
-    });
-  },
-});
-
 export const deleteAccount = mutation({
   args: {},
   handler: async (ctx) => {
@@ -274,7 +240,6 @@ export const updateProfile = internalMutation({
       pfp: v.optional(v.string()),
       monthlyIncome: v.optional(v.number()),
       monthlyIncomeUpdatedAt: v.optional(v.number()),
-      onboardingCompleted: v.optional(v.boolean()),
     }),
   },
   handler: async (ctx, { userId, updates }) => {

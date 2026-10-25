@@ -1,4 +1,4 @@
-import { ArrowDownLeft, ArrowUpRight, CalendarDays, CircleHelp, Coffee, HeartPulse, Home, Plus, ShoppingBag, Sparkles, Target, TrendingUp, Utensils, Wallet } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, CalendarDays, CircleHelp, Coffee, HeartPulse, Home, Plus, ShoppingBag, Target, TrendingUp, Utensils, Wallet } from "lucide-react";
 import Header from "../../components/Header";
 import { api } from "@web_backend/convex/_generated/api";
 import { useQuery } from "convex/react";
@@ -174,6 +174,13 @@ export default function Dashboard() {
         color: categoryColors[index % categoryColors.length],
         icon: categoryIcons[label.trim().toLowerCase()] ?? Wallet,
       }));
+    const topCategory = [...categoryTotals.entries()].sort((first, second) => second[1] - first[1])[0];
+    const topCategoryShare = topCategory && spentThisMonth > 0
+      ? Math.round((topCategory[1] / spentThisMonth) * 100)
+      : 0;
+    const TopCategoryIcon = topCategory
+      ? categoryIcons[topCategory[0].trim().toLowerCase()] ?? Wallet
+      : Target;
 
     function Greetings (){
         if(today_date.getHours() < 12){
@@ -198,6 +205,16 @@ export default function Dashboard() {
             <button type="button" onClick={() => navigate("/add-expense")} className="inline-flex items-center justify-center gap-2 self-start rounded-xl bg-[#e88976] px-4 py-3 text-sm font-bold text-white shadow-[3px_3px_0_#27352f] transition-transform hover:-translate-y-0.5 sm:self-auto"><Plus size={17} /> Add expense</button>
             </section>
 
+            {profile && monthlyIncome === undefined && (
+              <aside className="mb-5 flex flex-col gap-3 rounded-2xl border border-[#f0dfaa] bg-[#fff8dd] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-start gap-3">
+                  <CircleHelp size={18} className="mt-0.5 shrink-0 text-[#806b32]" />
+                  <p className="text-sm leading-5 text-[#6e5e32]">Add your monthly income to see how much you have available to spend. You can enter it manually in your account information.</p>
+                </div>
+                <button type="button" onClick={() => navigate("/account-info")} className="shrink-0 self-start text-sm font-bold text-[#806b32] underline underline-offset-4 hover:text-[#27352f] sm:self-auto">Add monthly income</button>
+              </aside>
+            )}
+
             <section className="grid gap-4 md:grid-cols-3">
             {summaryCards.map((card) => { const Icon = card.icon; return <article key={card.label} className={`rounded-[24px] border border-[#dce6dc] ${card.tone} p-5 shadow-[0_10px_24px_rgba(39,53,47,0.04)]`}><div className="flex items-start justify-between"><p className="text-sm font-bold text-[#627069]">{card.label}</p><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/80 text-[#27352f]"><Icon size={18} /></span></div><p className="mt-7 text-3xl font-black tracking-[-0.07em]">{card.value}</p><p className="mt-2 text-xs font-semibold text-[#75837b]">{card.note}</p></article>; })}
             <article className="rounded-[24px] border border-[#dce6dc] bg-[#27352f] p-5 text-white shadow-[0_10px_24px_rgba(39,53,47,0.08)] md:col-span-3 lg:col-span-1"><div className="flex items-center justify-between"><p className="text-sm font-bold text-[#b7c6bc]">Monthly income</p><CircleHelp size={17} className="text-[#f8d66d]" /></div><div className="mt-6 flex items-end justify-between"><span className="text-3xl font-black tracking-[-0.07em]">{dashboardDataLoading ? "..." : monthlyIncome === undefined ? "Not set" : formatMoney(monthlyIncome)}</span><span className="text-sm font-bold text-[#f8d66d]">{monthlyIncome === undefined ? "" : `${budgetUsedPercent}% used`}</span></div><div className="mt-4 h-2.5 overflow-hidden rounded-full bg-white/15"><div className="h-full rounded-full bg-[#f8d66d] transition-[width]" style={{ width: `${budgetUsedPercent}%` }} /></div><p className="mt-3 text-xs font-semibold text-[#b7c6bc]">{availableToSpend === undefined ? "Set income in account info to track your budget" : `${formatMoney(availableToSpend)} available after spending and savings`}</p></article>
@@ -212,7 +229,36 @@ export default function Dashboard() {
             <section className="mt-6 grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
             <article className="rounded-[28px] border border-[#dce6dc] bg-white/90 p-5 shadow-[0_12px_30px_rgba(39,53,47,0.04)] sm:p-6"><SectionTitle title="Recent activity" /><div className="space-y-2">{dashboardDataLoading ? <p className="py-2 text-sm font-semibold text-[#829087]">Loading recent activity...</p> : recentActivities.length === 0 ? <p className="py-2 text-sm font-semibold text-[#829087]">No recent expenses, savings, or income changes.</p> : recentActivities.map((activity) => { const Icon = activity.icon; return <div key={activity.id} className="flex items-center gap-3 rounded-2xl border border-[#edf0ea] bg-[#fdfcf8] px-3 py-3 transition-colors hover:bg-[#f8f6f0] sm:px-4"><span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${activity.color} text-[#27352f]`}><Icon size={17} /></span><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{activity.name}</p><p className="mt-0.5 text-xs text-[#829087]">{activity.category} · {formatActivityDate(activity.timestamp)}</p></div><p className={`text-sm font-black ${activity.positive ? "text-[#4e7460]" : "text-[#27352f]"}`}>{activity.amount}</p></div>; })}</div></article>
 
-            <article className="rounded-[28px] border border-[#dce6dc] bg-[#fff8dd] p-5 shadow-[0_12px_30px_rgba(39,53,47,0.04)] sm:p-6"><div className="flex items-start justify-between"><div><p className="text-xs font-black uppercase tracking-[0.14em] text-[#9d8950]">Your next win</p><h2 className="mt-2 text-xl font-black tracking-[-0.05em]">Weekend getaway</h2></div><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/70 text-[#806b32]"><Target size={19} /></span></div><p className="mt-7 text-3xl font-black tracking-[-0.07em]">$620 <span className="text-sm font-bold text-[#9d8950]">/ $1,000</span></p><div className="mt-4 h-3 overflow-hidden rounded-full bg-[#f2e7b7]"><div className="h-full w-[62%] rounded-full bg-[#e88976]" /></div><div className="mt-3 flex justify-between text-xs font-bold text-[#9d8950]"><span>62% complete</span><span>Due Aug 01</span></div><div className="mt-8 rounded-2xl bg-white/60 p-3 text-xs font-semibold leading-5 text-[#806b32]"><Sparkles size={14} className="mb-1 inline-block" /> You’re on track to reach this goal in 3 months.</div></article>
+            <article className="rounded-[28px] border border-[#dce6dc] bg-[#fff8dd] p-5 shadow-[0_12px_30px_rgba(39,53,47,0.04)] sm:p-6">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.14em] text-[#9d8950]">Spending insight</p>
+                  <h2 className="mt-2 text-xl font-black tracking-[-0.05em]">Top category this month</h2>
+                </div>
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/70 text-[#806b32]">
+                  <TopCategoryIcon size={19} />
+                </span>
+              </div>
+              {dashboardDataLoading ? (
+                <p className="mt-8 text-sm font-semibold text-[#806b32]">Loading your spending...</p>
+              ) : topCategory ? (
+                <>
+                  <p className="mt-7 text-3xl font-black capitalize tracking-[-0.07em]">{topCategory[0]}</p>
+                  <p className="mt-2 text-lg font-bold text-[#806b32]">{formatMoney(topCategory[1])}</p>
+                  <div className="mt-4 h-2.5 overflow-hidden rounded-full bg-[#f2e7b7]">
+                    <div className="h-full rounded-full bg-[#e88976]" style={{ width: `${topCategoryShare}%` }} />
+                  </div>
+                  <p className="mt-3 text-xs font-semibold leading-5 text-[#806b32]">
+                    {topCategoryShare}% of this month's {formatMoney(spentThisMonth)} spending across {currentMonthExpenses.length} {currentMonthExpenses.length === 1 ? "expense" : "expenses"}.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="mt-7 text-sm font-semibold leading-6 text-[#806b32]">Add an expense to see which category takes the biggest share of your spending this month.</p>
+                  <button type="button" onClick={() => navigate("/add-expense")} className="mt-5 rounded-xl bg-[#27352f] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#34483f]">Add your first expense</button>
+                </>
+              )}
+            </article>
             </section>
         </div>
         </main>

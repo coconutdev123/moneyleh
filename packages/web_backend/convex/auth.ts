@@ -44,7 +44,6 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
         gender: "",
         dob: "",
         pfp: "",
-        onboardingCompleted: false,
       });
       await ctx.scheduler.runAfter(0, internal.usernameFilter.rebuildUsernameFilter, {});
     },

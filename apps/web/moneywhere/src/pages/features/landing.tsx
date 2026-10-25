@@ -1,5 +1,6 @@
 import { ArrowRight, Check, ChevronDown, CircleHelp, Leaf, Menu, Play, Sparkles, Star, TrendingUp, Wallet } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
+import { useConvexAuth } from "convex/react";
 
 const spending = [
 	{ label: "Home", amount: "$920", color: "bg-[#ff9e8e]", width: "w-[76%]" },
@@ -19,6 +20,16 @@ function Logo() {
 }
 
 export default function Landing() {
+	const { isAuthenticated, isLoading } = useConvexAuth();
+
+	if (isLoading) {
+		return <main className="flex min-h-screen items-center justify-center bg-[#f8f6f0] text-sm font-semibold text-[#75837b]">Loading...</main>;
+	}
+
+	if (isAuthenticated) {
+		return <Navigate to="/dashboard" replace />;
+	}
+
 	return (
 		<main className="min-h-screen overflow-hidden bg-[#f8f6f0] text-[#27352f] selection:bg-[#f8d66d] selection:text-[#27352f]">
 			<div className="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[760px] bg-[radial-gradient(circle_at_75%_20%,rgba(169,199,245,0.34),transparent_29%),radial-gradient(circle_at_15%_38%,rgba(158,217,194,0.27),transparent_28%)]" />

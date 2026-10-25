@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 const sections = [
 	{
 		title: "Information we collect",
-		body: "When you create an account, we collect the information needed to provide the service, such as your email address, username, and authentication details. When you use moneyleh, you may provide profile information, expenses, budgets, wishlist items, savings amounts, and related notes. New users may also choose to provide their date of birth and monthly income in the onboarding survey. We may receive basic device, browser, and security information needed to keep the service reliable.",
+		body: "When you create an account, we collect the information needed to provide the service, such as your email address, username, and authentication details. When you use moneyleh, you may provide profile information, expenses, budgets, wishlist items, savings amounts, and related notes. You can choose to provide your date of birth and monthly income in your account information. We may receive basic device, browser, and security information needed to keep the service reliable.",
 	},
 	{
 		title: "How we use information",

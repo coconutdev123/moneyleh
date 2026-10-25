@@ -3,11 +3,12 @@ import { Button } from "@shared/components/ui/button";
 import { Leaf } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@web_backend/convex/_generated/api";
-import {useQuery} from "convex/react";
+import { useConvexAuth, useQuery } from "convex/react";
 
 export default function Header() {
 
     const navigate = useNavigate();
+    const { isAuthenticated } = useConvexAuth();
     const profile = useQuery(api.profile.getProfile);
     const profilePicture = profile?.pfp?.trim();
     const usernameInitial = profile?.username?.trim().charAt(0).toUpperCase() || "U";
@@ -15,7 +16,7 @@ export default function Header() {
     return (
     <header className="flex items-center justify-between rounded-[24px] border border-[#dce6dc] bg-white/85 px-4 py-3 shadow-[0_10px_24px_rgba(39,53,47,0.04)] backdrop-blur-sm sm:px-5">
         <div className="flex items-center gap-4">
-        <button type="button" className="hidden items-center gap-2 text-[#27352f] sm:flex" onClick={() => navigate("/")} aria-label="Go to moneyleh home">
+        <button type="button" className="hidden items-center gap-2 text-[#27352f] sm:flex" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/")} aria-label={isAuthenticated ? "Go to dashboard" : "Go to moneyleh home"}>
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#27352f] text-[#f8d66d] shadow-[2px_2px_0_#9ed9c2]"><Leaf size={16} /></span>
             <span className="text-sm font-black tracking-[-0.04em]">moneyleh</span>
         </button>
