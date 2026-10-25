@@ -1,4 +1,4 @@
-What this is
+# What this is
 
 This repo is a TypeScript monorepo for a web app with OAuth-backed authentication, a protected dashboard, and a Convex-powered backend for user profiles and auth flows. The documentation describes it as an AI Job Application Assistant Platform, and the app code reflects that shape: sign-in/sign-up pages, a dashboard route, and profile APIs.
 
