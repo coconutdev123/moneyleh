@@ -1,34 +1,51 @@
 # What this is
 
-This repo is a TypeScript monorepo for a web app with OAuth-backed authentication, a protected dashboard, and a Convex-powered backend for user profiles and auth flows. The documentation describes it as an AI Job Application Assistant Platform, and the app code reflects that shape: sign-in/sign-up pages, a dashboard route, and profile APIs.
+MoneyLeh is a TypeScript monorepo. The current web app is built with React, Vite, and TypeScript; the backend uses Convex.
 
-Stack
-Language(s): TypeScript
-Framework / runtime: Vite + React 19 for the web app; Convex for the backend/auth layer
-Notable libraries: React Router, Convex auth, shadcn-style UI primitives, Tailwind CSS, and the Auth.js/Convex auth integration
-How it's organized
+## Repository layout
 
-apps/
-  web/
-    moneywhere/    Vite/React app, routing, auth screens, dashboard
-docs/
-  oauth-setup.md  Google/GitHub OAuth and Convex env setup
-packages/
-  shared/          shared TS utilities and reusable UI primitives
-  web_backend/     Convex backend, schema, auth, profile HTTP routes
+- `apps/web/moneywhere` — React/Vite web application
+- `apps/mobile` — reserved for the mobile application (not implemented yet)
+- `packages/shared` — shared TypeScript utilities and UI primitives
+- `packages/web_backend` — Convex schema, auth, and API functions
+- `docs/oauth-setup.md` — Google/GitHub OAuth and Convex environment setup
 
-How it fits together: The frontend app in apps/web/moneywhere sets up routes for /sign-in, /sign-up, /forgot-password, /confirmation, and a protected /dashboard behind a PrivateRoute. The backend package uses Convex to define auth and profile behavior (auth.ts, schema.ts, http.ts, profile.ts), and the docs explain how to wire Google/GitHub OAuth credentials into Convex environment variables. packages/shared is the small reusable UI layer for things like buttons and styling utilities.
+## Install
 
-How to run it
-Fresh clone path, based on the repo’s package/workspace setup and the app scripts:
+From the repository root:
 
-bash
-# install the workspace dependencies
+```bash
 bun install
+```
 
-# run the frontend app
-cd apps/web/moneywhere
-bun run dev
+## Web app
 
-For the backend/auth side, this repo expects a Convex deployment and the OAuth env vars described in docs/oauth-setup.md to be configured in the Convex Dashboard. In practice, the backend is meant to be run through Convex tooling rather than a local Node server script.
+Run the web app in development mode:
 
+```bash
+bun run dev:web
+```
+
+Build the web app:
+
+```bash
+bun run build:web
+```
+
+Other web-only checks and commands:
+
+```bash
+bun run typecheck:web
+bun run lint:web
+bun run preview:web
+```
+
+These root scripts target only the `moneywhere` workspace, so they do not run mobile or backend tasks.
+
+## Mobile app
+
+There is no mobile app package or build configured yet. The workspace includes `apps/*` so a mobile app placed directly in `apps/mobile` can be added as its own package, with separate root scripts such as `build:mobile` when its framework and build commands are established.
+
+## Backend
+
+The backend expects a Convex deployment and OAuth environment variables configured as described in `docs/oauth-setup.md`. Run Convex tooling from the `packages/web_backend` package as needed.

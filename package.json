@@ -2,7 +2,15 @@
   "name": "moneyleh",
   "private": true,
   "workspaces": [
+    "apps/*",
     "apps/*/*",
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "dev:web": "bun run --filter moneywhere dev",
+    "build:web": "bun run --filter moneywhere build",
+    "typecheck:web": "bun run --filter moneywhere typecheck",
+    "lint:web": "bun run --filter moneywhere lint",
+    "preview:web": "bun run --filter moneywhere preview"
+  }
 }
