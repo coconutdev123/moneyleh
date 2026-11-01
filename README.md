@@ -1,4 +1,4 @@
-# MoneyLeh
+# What this is
 
 MoneyLeh is a TypeScript monorepo. The current web app is built with React, Vite, and TypeScript; the backend uses Convex.
 
