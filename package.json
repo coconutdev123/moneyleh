@@ -11,6 +11,12 @@
     "build:web": "bun run --filter moneywhere build",
     "typecheck:web": "bun run --filter moneywhere typecheck",
     "lint:web": "bun run --filter moneywhere lint",
-    "preview:web": "bun run --filter moneywhere preview"
+    "preview:web": "bun run --filter moneywhere preview",
+    "start:mobile": "bun run --filter @moneyleh/mobile start",
+    "web:mobile": "bun run --filter @moneyleh/mobile web",
+    "android:mobile": "bun run --filter @moneyleh/mobile android",
+    "ios:mobile": "bun run --filter @moneyleh/mobile ios",
+    "typecheck:mobile": "bun run --filter @moneyleh/mobile typecheck",
+    "lint:mobile": "bun run --filter @moneyleh/mobile lint"
   }
 }
